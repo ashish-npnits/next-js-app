@@ -1,19 +1,40 @@
 'use client';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { Flex, Container, TextField, Heading, Card, Button, Text } from '@radix-ui/themes';
 import { EnvelopeOpenIcon, EyeClosedIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 const LoginPage = () => {
+  const router = useRouter();
+
   const [credentials, setCredentials] = useState({email:"", password:""});
 
   const onChange=(event:any)=>{
     setCredentials({...credentials,[event.target.name]:event.target.value})
   }
 
-  const submitLogin=()=>{
-
+  const [buttonDisabled, setButtonDisabled] = useState(true)
+ 
+  const submitLogin = async() =>{
+    try {
+      const response = await axios.post('/api/users/login',credentials);
+      toast.success('login Successfull');
+      router.push("/");
+    } catch (error:any) {
+      console.log('Signup Failed '+error.message);
+      toast.error(error.message);
+    }
   }
+
+  useEffect(()=>{
+    if(credentials.email.length>0 && credentials.password.length>0 ){
+      setButtonDisabled(false);
+    }else
+    setButtonDisabled(true);
+  },[credentials])
   
   return (
     <Container size="1" py="8">
@@ -41,7 +62,7 @@ const LoginPage = () => {
         </TextField.Root>
         </Flex>
         <Flex justify="center" py="6">
-          <Button variant="solid" radius="full" color="gray" onClick={submitLogin}>Login</Button>
+          <Button variant="solid" radius="full" color="gray" disabled={buttonDisabled} onClick={submitLogin}>Login</Button>
         </Flex>
         <Text>Don't have an account <span><Link href="/signup">Signup</Link></span></Text>
         </Card>
