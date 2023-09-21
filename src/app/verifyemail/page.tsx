@@ -3,6 +3,7 @@
 import axios from "axios";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 
 export default function VerifyEmailPage() {
@@ -15,6 +16,7 @@ export default function VerifyEmailPage() {
         try {
             await axios.post('/api/users/verifyemail', {token})
             setVerified(true);
+            toast.success('Account verification Successfull');
         } catch (error:any) {
             setError(true);
             console.log(error.reponse.data);
