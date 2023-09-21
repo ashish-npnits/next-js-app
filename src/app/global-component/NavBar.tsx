@@ -5,13 +5,18 @@ import toast from 'react-hot-toast';
 
 import { useRouter } from 'next/navigation';
 import UserName from './UserName';
+import {useDispatch} from 'react-redux';
+import { AppDispatch } from '@/state/store';
+import { logout } from '@/state/features/auth-slice';
 
 
 const NavBar = () => {
   const router = useRouter();
+  const dispatcher = useDispatch<AppDispatch>();
   const doLogout=async ()=>{
     
-    const response = await axios.get('/api/users/logout');
+    await axios.get('/api/users/logout');
+      dispatcher(logout());
       toast.success('logout Successfull');
       router.push("/login");
   }

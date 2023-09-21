@@ -1,25 +1,10 @@
 'use client';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { useAppSelector } from '@/state/store';
+import React from 'react';
 
 const UserName = () => {
-    const [username, setUserName] = useState("");
-    const router = useRouter();
-    const callMeAPI = async () =>{
-        try {
-            const response = await axios.get('/api/users/me');
-            console.log(response.data);
-            setUserName(response.data.user.username);
-        } catch (error) {
-            
-        }
-    }
-
-    useEffect(()=>{
-        callMeAPI();
-    },[username, router]);
-
+    const username = useAppSelector((state)=>state.authReducer.value.username);
+    
     return (
         username && <li>
             <a className="md:p-4 py-2 block hover:text-purple-400" href="#"
