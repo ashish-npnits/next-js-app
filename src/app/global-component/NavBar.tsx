@@ -4,6 +4,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 import { useRouter } from 'next/navigation';
+import UserName from './UserName';
 
 
 const NavBar = () => {
@@ -128,6 +129,7 @@ const NavBar = () => {
              >Blog</a
            >
          </li>
+         <UserName/>
          <li>
            <a
              className="md:p-4 py-2 block hover:text-purple-400 text-purple-500"
