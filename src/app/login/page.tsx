@@ -6,10 +6,14 @@ import Link from 'next/link';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import {useDispatch} from 'react-redux';
+import { AppDispatch } from '@/state/store';
+import { login } from '@/state/features/auth-slice';
+
 
 const LoginPage = () => {
   const router = useRouter();
-
+  const dispatcher = useDispatch<AppDispatch>();
   const [credentials, setCredentials] = useState({email:"", password:""});
 
   const onChange=(event:any)=>{
@@ -22,6 +26,15 @@ const LoginPage = () => {
     try {
       const response = await axios.post('/api/users/login',credentials);
       toast.success('login Successfull');
+      
+      const responseData =  response.data;
+      dispatcher(login({
+        username: responseData.user.username,
+        email: responseData.user.email,
+        isVerfied: responseData.user.isVerfied,
+        isAdmin: responseData.user.isAdmin,
+      }));
+
       router.push("/");
     } catch (error:any) {
       console.log('Signup Failed '+error.message);
