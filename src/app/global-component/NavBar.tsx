@@ -1,10 +1,19 @@
 'use client';
 import React from 'react';
-import * as Menubar from '@radix-ui/react-menubar';
-import { CheckIcon, ChevronRightIcon, DotFilledIcon } from '@radix-ui/react-icons';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+
+import { useRouter } from 'next/navigation';
 
 
 const NavBar = () => {
+  const router = useRouter();
+  const doLogout=async ()=>{
+    
+    const response = await axios.get('/api/users/logout');
+      toast.success('logout Successfull');
+      router.push("/login");
+  }
 
   return (
     
@@ -124,6 +133,14 @@ const NavBar = () => {
              className="md:p-4 py-2 block hover:text-purple-400 text-purple-500"
              href="#"
              >Sign Up</a
+           >
+         </li>
+
+         <li>
+           <a
+             className="md:p-4 py-2 block hover:text-purple-400 text-purple-500"
+             href="#" onClick={doLogout}
+             >logout</a
            >
          </li>
        </ul>
